@@ -1,0 +1,53 @@
+def gaeVersion = '1.7.6'
+def lang = ['java', 'groovy']
+
+lang.each {ln ->
+    apply plugin: ln
+}
+apply plugin: 'idea'
+apply plugin: 'gae'
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'javax.servlet:servlet-api:2.5'
+    compile 'javax.servlet:jsp-api:2.0'
+    compile "com.google.appengine:appengine-api-1.0-sdk:$gaeVersion"
+    compile "com.google.appengine:appengine-api-labs:$gaeVersion"
+
+    groovy 'org.codehaus.groovy:groovy:2.1.1'
+
+    testCompile 'junit:junit:4.11'
+}
+
+task structure(depends : idea) << {
+    def dirs = []
+    dirs << 'src'
+    sourceSets.all { src ->
+        dirs << "src/${src.name}"
+        lang.each { ln ->
+            dirs << "src/${src.name}/${ln}"
+        }
+    }
+    dirs.each {
+        def dir = new File(it)
+        if(dir.exists() == false) dir.mkdir()
+    }
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-gae-plugin:0.8'
+    }
+}
+
