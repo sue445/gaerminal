@@ -16,11 +16,40 @@ repositories {
 
 apply plugin: 'gae'
 gae {
+    httpPort = 8888
+    optimizeWar = true
+
+    appcfg {
+        email = 'sue445fukuoka@gmail.com'
+        passIn = true
+
+        logs {
+            severity = 1
+            outputFile = file('log.txt')
+        }
+
+        app {
+            id = 'gaeminal'
+        }
+    }
+
     downloadSdk = true
     System.properties['appengine.sdk.root'] = gaeDownloadSdk.explodedSdkDirectory.getPath() + File.separator + "appengine-java-sdk-$gaeVersion"
+
+    gaeRun.doFirst{
+        copy {
+            from('web/WEB-INF/') {
+                include '**/*'
+            }
+
+            into 'build/exploded-war/WEB-INF/'
+        }
+    }
 }
 
 dependencies {
+    compile 'javax.servlet:servlet-api:2.5'
+    compile 'javax.servlet:jsp-api:2.0'
     groovy 'org.codehaus.groovy:groovy:2.1.1'
     gaeSdk "com.google.appengine:appengine-java-sdk:$gaeVersion"
 
