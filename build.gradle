@@ -49,7 +49,8 @@ dependencies {
 //    testCompile "com.google.appengine:appengine-api-stubs:$gaeVersion"
 //    testCompile "com.google.appengine:appengine-local-endpoints:$gaeVersion"
     testCompile ("org.slim3:slim3:$slim3Version") {
-        //exclude group: 'com.google.appengine', module: 'appengine-api-1.0-sdk'
+        exclude group: 'com.google.appengine', module: 'appengine-api-1.0-sdk'
+        exclude group: 'com.google.appengine', module: 'appengine-api-labs'
     }
 }
 
