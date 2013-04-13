@@ -11,7 +11,7 @@ class FileUtilTest {
             @Test
             void "should return file content"(){
                 String actual = FileUtil.readPage("helloworld")
-                assertThat actual, containsString("helloworld")
+                assertThat actual, containsString("Hello World")
             }
         }
 
