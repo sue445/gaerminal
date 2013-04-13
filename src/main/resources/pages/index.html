@@ -1,9 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAErminal console</title>
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <style type="text/css">
+    </style>
 </head>
 <body>
-Hello World
+
+<!-- header -->
+<div class="navbar navbar-fluid-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">GAErminal</a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12">
+            <h2>Input</h2>
+            <textarea id="input" rows="20" class="span12"></textarea>
+            <button id="run" class="btn btn-primary">run</button>
+
+            <h2>Output</h2>
+            <textarea id="output" rows="20" class="span12"></textarea>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    (function($){
+        $(document).ready(function(){
+            $("#run").click(function(){
+                // TODO impl
+            });
+        });
+    })(jQuery);
+</script>
+
 </body>
 </html>
