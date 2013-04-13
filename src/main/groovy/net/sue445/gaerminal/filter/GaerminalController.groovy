@@ -1,13 +1,13 @@
 package net.sue445.gaerminal.filter
 
-import net.sue445.gaerminal.controller.RunController
+import net.sue445.gaerminal.controller.ScriptController
 import net.sue445.gaerminal.util.FileUtil
 
 import javax.servlet.*
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-public class GaerminalController implements Filter {
+class GaerminalController implements Filter {
     private static final String DEFAULT_PATH_PREFIX = "/gaerminal/"
 
     protected String pathPrefix = DEFAULT_PATH_PREFIX
@@ -43,29 +43,26 @@ public class GaerminalController implements Filter {
             pageName = "index"
         }
 
-        if(pageName.startsWith("script")){
-            RunController controller = new RunController()
+        if(pageName == "script"){
+            ScriptController controller = new ScriptController()
             String content = controller.execute(request)
             response.setStatus(200)
             response.setContentType("text/plain; charset=UTF-8")
-            response.setContentLength(content.length())
-            response.getOutputStream().print(content)
+            printContent(response, content)
             return
         }
 
         String content = FileUtil.readPage(pageName)
         if(content == null) {
-            content = "Not Found"
             response.setStatus(404)
             response.setContentType("text/plain; charset=UTF-8")
+            printContent(response, "Not Found")
 
         } else {
             response.setStatus(200)
             response.setContentType("text/html; charset=UTF-8")
+            printContent(response, content)
         }
-
-        response.setContentLength(content.length())
-        response.getOutputStream().print(content)
     }
 
     @Override
@@ -74,5 +71,10 @@ public class GaerminalController implements Filter {
 
     boolean isEmpty(String str){
         return str == null || str.isEmpty()
+    }
+
+    private void printContent(HttpServletResponse response, String content){
+        response.setContentLength(content.length())
+        response.getOutputStream().print(content)
     }
 }

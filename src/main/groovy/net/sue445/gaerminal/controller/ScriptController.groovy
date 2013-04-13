@@ -2,7 +2,7 @@ package net.sue445.gaerminal.controller
 
 import javax.servlet.http.HttpServletRequest
 
-class RunController {
+class ScriptController {
     private static final String ENCODE = "UTF-8"
 
     String execute(HttpServletRequest request){

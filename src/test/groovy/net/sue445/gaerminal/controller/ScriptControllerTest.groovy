@@ -1,16 +1,14 @@
 package net.sue445.gaerminal.controller
 
-import static org.hamcrest.Matchers.*
-import static org.junit.Assert.*
 import org.junit.Test
 
-class RunControllerTest {
+class ScriptControllerTest {
     static class execute {
 
     }
 
     static class runScript {
-        RunController controller = new RunController()
+        ScriptController controller = new ScriptController()
 
         @Test
         void "run groovy script, return console output"(){
