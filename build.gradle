@@ -1,3 +1,7 @@
+def description = 'run groovy script on your Google App Engine app'
+def group = 'net.sue445'
+def version = '0.0.1'
+
 def gaeVersion = '1.7.6'
 def slim3Version = '1.0.16'
 def lang = ['groovy', 'java']
@@ -97,3 +101,23 @@ task structure(depends : idea) << {
     }
 }
 
+// ref. http://d.hatena.ne.jp/int128/20130409/1365434513
+task javadocJar(type: Jar, dependsOn: groovydoc) {
+    classifier = 'javadoc'
+    from "${buildDir}/javadoc"
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+if (gradle.startParameter.taskNames.contains('uploadArchives')) {
+    apply from: 'build.publish.gradle'
+}
