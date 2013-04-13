@@ -35,7 +35,7 @@ repositories {
 }
 
 dependencies {
-    groovy 'org.codehaus.groovy:groovy:2.1.1'
+    groovy 'org.codehaus.groovy:groovy-all:2.1.1'
     gaeSdk "com.google.appengine:appengine-java-sdk:$gaeVersion"
 
     compile 'javax.servlet:servlet-api:2.5'
