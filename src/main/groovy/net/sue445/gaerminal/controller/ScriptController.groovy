@@ -2,8 +2,13 @@ package net.sue445.gaerminal.controller
 
 import javax.servlet.http.HttpServletRequest
 
-class ScriptController {
+class ScriptController implements Controller{
     private static final String ENCODE = "UTF-8"
+
+    @Override
+    String execute(Object request){
+        execute((HttpServletRequest)request)
+    }
 
     String execute(HttpServletRequest request){
         String script = request.getParameter("script")

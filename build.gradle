@@ -1,6 +1,6 @@
 def gaeVersion = '1.7.6'
 def slim3Version = '1.0.16'
-def lang = ['java', 'groovy']
+def lang = ['groovy', 'java']
 
 lang.each {ln ->
     apply plugin: ln
