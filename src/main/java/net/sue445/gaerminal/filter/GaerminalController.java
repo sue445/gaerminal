@@ -1,10 +1,6 @@
 package net.sue445.gaerminal.filter;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 
 public class GaerminalController implements Filter {
     private static final String DEFAULT_PATH_PREFIX = "/gaerminal";
