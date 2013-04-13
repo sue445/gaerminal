@@ -5,13 +5,18 @@
 		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
            version="2.5">
 
-    <servlet>
-        <servlet-name>HelloWorldServlet</servlet-name>
-        <servlet-class>net.sue445.gaerminal.HelloWorldServlet</servlet-class>
-    </servlet>
-    
-    <servlet-mapping>
-        <servlet-name>HelloWorldServlet</servlet-name>
-        <url-pattern>/helloworld</url-pattern>
-    </servlet-mapping>
+    <filter>
+        <filter-name>GaerminalController</filter-name>
+        <filter-class>net.sue445.gaerminal.filter.GaerminalController</filter-class>
+        <init-param>
+            <param-name>pathPrefix</param-name>
+            <param-value>/gaerminal/</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>GaerminalController</filter-name>
+        <url-pattern>/gaerminal/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
 </web-app>

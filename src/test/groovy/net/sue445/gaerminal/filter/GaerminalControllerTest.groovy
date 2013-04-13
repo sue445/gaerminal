@@ -8,7 +8,6 @@ import org.slim3.tester.ControllerTestCase
 
 import javax.servlet.FilterConfig
 
-@RunWith(Enclosed)
 class GaerminalControllerTest {
 
     static class init extends ControllerTestCase {
@@ -43,12 +42,43 @@ class GaerminalControllerTest {
     static class doFilter extends ControllerTestCase  {
         GaerminalController filter = new GaerminalController()
 
-        @Ignore
         @Test
-        void index(){
+        void "when exists file, return page file"(){
+            // setup
+            tester.request.setServletPath(GaerminalController.DEFAULT_PATH_PREFIX + "helloworld")
+
+            // exercise
             filter.doFilter(tester.request, tester.response, tester.filterChain)
 
-            assert tester.response.getOutputAsString().contains("helloworld") == true
+            // assertion
+            assert tester.response.getOutputAsString().contains("Hello World") == true
+            assert tester.response.getStatus() == 200
+        }
+
+        @Test
+        void "when not exists file, return status 404"(){
+            // setup
+            tester.request.setServletPath(GaerminalController.DEFAULT_PATH_PREFIX + "invalid")
+
+            // exercise
+            filter.doFilter(tester.request, tester.response, tester.filterChain)
+
+            // assertion
+            assert tester.response.getOutputAsString() == "Not Found"
+            assert tester.response.getStatus() == 404
+        }
+
+        @Test
+        void "when called /gaerminal/, return index.html"(){
+            // setup
+            tester.request.setServletPath(GaerminalController.DEFAULT_PATH_PREFIX)
+
+            // exercise
+            filter.doFilter(tester.request, tester.response, tester.filterChain)
+
+            // assertion
+            assert tester.response.getOutputAsString().contains("pages/index.html") == true
+            assert tester.response.getStatus() == 200
         }
     }
 }
