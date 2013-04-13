@@ -89,6 +89,7 @@ task structure(depends : idea) << {
         lang.each { ln ->
             dirs << "src/${src.name}/${ln}"
         }
+        dirs << "src/${src.name}/resources"
     }
     dirs.each {
         def dir = new File(it)
