@@ -1,5 +1,6 @@
 package net.sue445.gaerminal.filter
 
+import net.sue445.gaerminal.controller.RunController
 import net.sue445.gaerminal.util.FileUtil
 
 import javax.servlet.*
@@ -40,6 +41,16 @@ public class GaerminalController implements Filter {
         String pageName = request.getServletPath().replaceFirst(pathPrefix, "")
         if(pageName.isEmpty()){
             pageName = "index"
+        }
+
+        if(pageName.startsWith("script")){
+            RunController controller = new RunController()
+            String content = controller.execute(request)
+            response.setStatus(200)
+            response.setContentType("text/plain; charset=UTF-8")
+            response.setContentLength(content.length())
+            response.getOutputStream().print(content)
+            return
         }
 
         String content = FileUtil.readPage(pageName)

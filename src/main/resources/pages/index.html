@@ -29,11 +29,11 @@
     <div class="row-fluid">
         <div class="span12">
             <h2>Input</h2>
-            <textarea id="input" rows="20" class="span12"></textarea>
+            <textarea id="input" rows="10" class="span12"></textarea>
             <button id="run" class="btn btn-primary">run</button>
 
             <h2>Output</h2>
-            <textarea id="output" rows="20" class="span12"></textarea>
+            <textarea id="output" rows="10" class="span12"></textarea>
         </div>
     </div>
 </div>
@@ -44,7 +44,15 @@
     (function($){
         $(document).ready(function(){
             $("#run").click(function(){
-                // TODO impl
+                $.ajax({
+                    url: "/gaerminal/script?script=" + $("#input").val(),
+                    type: "GET",
+                    traditional : true,
+                    type: "text",
+                    success: function(res){
+                        $("#output").val(res);
+                    }
+                })
             });
         });
     })(jQuery);
