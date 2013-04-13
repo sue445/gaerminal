@@ -3,22 +3,27 @@ package net.sue445.gaerminal.controller
 import javax.servlet.http.HttpServletRequest
 
 class RunController {
+    private static final String ENCODE = "UTF-8"
+
     String execute(HttpServletRequest request){
         String script = request.getParameter("script")
         runScript(script)
     }
 
     String runScript(String script){
-        // TODO 例外のハンドリング
         PrintStream origOut = System.out
         try{
             ByteArrayOutputStream stream = new ByteArrayOutputStream()
-            PrintStream scriptOut = new PrintStream(stream)
-            System.setOut(scriptOut)
+            System.setOut(new PrintStream(stream))
 
             def shell = new GroovyShell()
             shell.evaluate(script)
-            return stream.toString("UTF-8")
+            stream.toString(ENCODE)
+
+        } catch (Throwable e){
+            ByteArrayOutputStream stream = new ByteArrayOutputStream()
+            e.printStackTrace(new PrintStream(stream))
+            stream.toString(ENCODE)
 
         } finally {
             System.setOut(origOut)

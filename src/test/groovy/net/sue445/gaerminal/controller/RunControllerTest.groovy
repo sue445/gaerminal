@@ -20,5 +20,12 @@ println("HelloWorld")
             assert controller.runScript(script) == "HelloWorld\n"
         }
 
+        @Test
+        void "when exception, return stacktrace"(){
+            String script = """
+throw new RuntimeException("test")
+"""
+            assert controller.runScript(script).contains("RuntimeException")
+        }
     }
 }
