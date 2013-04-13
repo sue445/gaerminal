@@ -16,6 +16,9 @@ public class GaerminalController implements Filter {
         String pathPrefix = config.getInitParameter("pathPrefix")
 
         if(!isEmpty(pathPrefix)){
+            if(!pathPrefix.startsWith("/")){
+                pathPrefix = "/" + pathPrefix
+            }
             if(!pathPrefix.endsWith("/")){
                 pathPrefix += "/"
             }

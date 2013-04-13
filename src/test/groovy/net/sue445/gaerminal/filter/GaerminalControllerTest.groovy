@@ -35,7 +35,7 @@ class GaerminalControllerTest {
             filter.init(config)
 
             // assertion
-            assert filter.pathPrefix == pathPrefix
+            assert filter.pathPrefix == "/" + pathPrefix + "/"
         }
     }
 
