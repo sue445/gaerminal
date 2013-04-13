@@ -2,5 +2,5 @@ language: groovy
 jdk:
   - oraclejdk7
   - openjdk6
-before_script:
+before_install:
   - cp gradle.properties.sample gradle.properties
