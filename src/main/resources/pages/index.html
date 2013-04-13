@@ -45,10 +45,14 @@
         $(document).ready(function(){
             $("#run").click(function(){
                 $.ajax({
-                    url: "/gaerminal/script?script=" + $("#input").val(),
-                    type: "GET",
+                    url: "/gaerminal/script",
+                    cache: true,
+                    type: "POST",
                     traditional : true,
-                    type: "text",
+                    dataType: "text",
+                    data: {
+                        script: $("#input").val()
+                    },
                     success: function(res){
                         $("#output").val(res);
                     }
