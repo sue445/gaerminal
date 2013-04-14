@@ -27,6 +27,7 @@ if(isRemoteDeploy){
     }
 }
 
+// gradle -Pdeploy=local uploadArchives
 uploadArchives {
     repositories.mavenDeployer {
         // -Pdeploy=central
