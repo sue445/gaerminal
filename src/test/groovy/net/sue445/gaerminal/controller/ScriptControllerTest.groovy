@@ -15,7 +15,12 @@ class ScriptControllerTest {
             String script = """
 println("HelloWorld")
 """
-            assert controller.runScript(script) == "HelloWorld\n"
+            String expected = """HelloWorld
+
+Result: null
+"""
+
+            assert controller.runScript(script) == expected
         }
 
         @Test
@@ -24,6 +29,17 @@ println("HelloWorld")
 throw new RuntimeException("test")
 """
             assert controller.runScript(script).contains("RuntimeException")
+        }
+
+        @Test
+        void "when has result, return result"(){
+            String script = """
+"a" * 10
+"""
+            String expected = """Result: 'aaaaaaaaaa'
+"""
+
+            assert controller.runScript(script) == expected
         }
     }
 }

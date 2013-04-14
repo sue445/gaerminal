@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest
 
 class ScriptController implements Controller{
     private static final String ENCODE = "UTF-8"
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator")
 
     @Override
     String execute(Object request){
@@ -21,9 +22,16 @@ class ScriptController implements Controller{
             ByteArrayOutputStream stream = new ByteArrayOutputStream()
             System.setOut(new PrintStream(stream))
 
-            def shell = new GroovyShell()
-            shell.evaluate(script)
-            stream.toString(ENCODE)
+            GroovyShell shell = new GroovyShell()
+            Object scriptResult = shell.evaluate(script)
+            String consoleResult = stream.toString(ENCODE)
+
+            String result = ""
+            if(!consoleResult.isEmpty()){
+                result += consoleResult + LINE_SEPARATOR
+            }
+            result += "Result: ${scriptResult.inspect()}" + LINE_SEPARATOR
+            result
 
         } catch (Throwable e){
             ByteArrayOutputStream stream = new ByteArrayOutputStream()
