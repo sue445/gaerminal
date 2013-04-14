@@ -13,24 +13,23 @@ lang.each {ln ->
 }
 apply plugin: 'idea'
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'org.gradle.api.plugins:gradle-gae-plugin:0.8'
+        classpath "com.google.appengine:appengine-maven-plugin:1.7.7"
+    }
+}
+
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
 
 if(!isUploadArchives) {
     apply plugin: 'gae'
-
-    buildscript {
-        repositories {
-            mavenCentral()
-        }
-
-        dependencies {
-            classpath 'org.gradle.api.plugins:gradle-gae-plugin:0.8'
-            classpath "com.google.appengine:appengine-maven-plugin:1.7.7"
-        }
-    }
-
     gae {
         httpPort = 8888
         optimizeWar = true
