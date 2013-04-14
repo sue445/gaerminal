@@ -6,6 +6,9 @@ boolean validProperty(propertyName) {
     try { project.property(propertyName) != null }
     catch (MissingPropertyException) { false }
 }
+
+def isRemoteDeploy = (deploy == "central")
+
 assert validProperty('signing.keyId'),             'properties for signing must be provided'
 assert validProperty('signing.secretKeyRingFile'), 'properties for signing must be provided'
 assert validProperty('sonatypeUsername'),          'properties for publish must be provided'
@@ -14,24 +17,42 @@ assert validProperty('sonatypeFullname'),          'properties for publish must 
 String askPassword(prompt) {
     "${System.console().readPassword(prompt)}"
 }
-ext.'signing.password' = askPassword("Enter password for PGP key ${property('signing.keyId')}: ")
-ext.'sonatypePassword' = askPassword("Enter password for ${sonatypeUsername}@oss.sonatype.org: ")
 
-signing {
-    sign configurations.archives
+if(isRemoteDeploy){
+    ext.'signing.password' = askPassword("Enter password for PGP key ${property('signing.keyId')}: ")
+    ext.'sonatypePassword' = askPassword("Enter password for ${sonatypeUsername}@oss.sonatype.org: ")
+
+    signing {
+        sign configurations.archives
+    }
 }
 
 uploadArchives {
     repositories.mavenDeployer {
-        repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-            authentication(userName: sonatypeUsername, password: sonatypePassword)
+        // -Pdeploy=central
+        if(isRemoteDeploy){
+            println "deploy to sonatype"
+
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+        } else {
+            println "deploy to local repo: ${localRepoPath}"
+
+            // define at gradle.properties
+            repository(url: localRepoPath)
         }
-        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+        pom.groupId    = project.group
+        pom.artifactId = project.name
+        pom.version    = project.version
         pom.project {
-            name 'GAErminal'
-            packaging 'jar'
+            name        project.name
+            packaging   'jar'
             description project.description
-            url 'https://github.com/sue445/gaerminal'
+            url         'https://github.com/sue445/gaerminal'
             scm {
                 url 'git://github.com/sue445/gaerminal.git'
                 connection 'scm:git:git://github.com/sue445/gaerminal.git'

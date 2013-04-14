@@ -1,1 +1,3 @@
 googleAccount=your-email@gmail.com
+localRepoPath=file:///path/to/deploy/repo
+deploy=local
