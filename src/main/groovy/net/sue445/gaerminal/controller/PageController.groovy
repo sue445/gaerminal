@@ -5,6 +5,7 @@ import net.sue445.gaerminal.util.FileUtil
 class PageController implements Controller{
     @Override
     String execute(Object request) {
-        FileUtil.readPage(request.toString());
+        String pageName =request.toString()
+        FileUtil.readPage(pageName);
     }
 }

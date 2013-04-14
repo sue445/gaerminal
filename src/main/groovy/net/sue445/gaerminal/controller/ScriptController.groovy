@@ -8,11 +8,7 @@ class ScriptController implements Controller{
 
     @Override
     String execute(Object request){
-        execute((HttpServletRequest)request)
-    }
-
-    String execute(HttpServletRequest request){
-        String script = request.getParameter("script")
+        String script = ((HttpServletRequest)request).getParameter("script")
         runScript(script)
     }
 
