@@ -6,6 +6,7 @@ boolean validProperty(propertyName) {
     try { project.property(propertyName) != null }
     catch (MissingPropertyException) { false }
 }
+
 assert validProperty('signing.keyId'),             'properties for signing must be provided'
 assert validProperty('signing.secretKeyRingFile'), 'properties for signing must be provided'
 assert validProperty('sonatypeUsername'),          'properties for publish must be provided'
@@ -23,15 +24,29 @@ signing {
 
 uploadArchives {
     repositories.mavenDeployer {
-        repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-            authentication(userName: sonatypeUsername, password: sonatypePassword)
+        // -Pdeploy=central
+        if(deploy == "central"){
+            println "deploy to sonatype"
+
+            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                authentication(userName: sonatypeUsername, password: sonatypePassword)
+            }
+        } else {
+            println "deploy to local repo: ${localRepoPath}"
+
+            // define at gradle.properties
+            repository(url: localRepoPath)
         }
         beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+        pom.groupId    = project.group
+        pom.artifactId = project.name
+        pom.version    = project.version
         pom.project {
-            name 'GAErminal'
-            packaging 'jar'
+            name        project.name
+            packaging   'jar'
             description project.description
-            url 'https://github.com/sue445/gaerminal'
+            url         'https://github.com/sue445/gaerminal'
             scm {
                 url 'git://github.com/sue445/gaerminal.git'
                 connection 'scm:git:git://github.com/sue445/gaerminal.git'
