@@ -2,8 +2,9 @@ project.description = 'run groovy script on your Google App Engine app'
 project.group       = 'net.sue445'
 project.version     = '0.0.1-SNAPSHOT'
 
-def gaeVersion = '1.7.7'
-def slim3Version = '1.0.16'
+def gaeVersion    = '1.7.7'
+def slim3Version  = '1.0.16'
+def groovyVersion = '2.1.3'
 def lang = ['groovy', 'java']
 boolean isUploadArchives = gradle.startParameter.taskNames.contains('uploadArchives')
 
@@ -72,9 +73,11 @@ repositories {
 }
 
 dependencies {
-    groovy 'org.codehaus.groovy:groovy-all:2.1.3'
+    groovy "org.codehaus.groovy:groovy-all:${groovyVersion}"
 
-    if (!isUploadArchives) {
+    if (isUploadArchives) {
+        compile "org.codehaus.groovy:groovy:${groovyVersion}"
+    } else{
         gaeSdk "com.google.appengine:appengine-java-sdk:$gaeVersion"
     }
 
