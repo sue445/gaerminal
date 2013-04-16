@@ -7,7 +7,9 @@ boolean validProperty(propertyName) {
     catch (MissingPropertyException) { false }
 }
 
-def isRemoteDeploy = (deploy == "central")
+boolean isRemoteDeploy(){
+    deploy == "release" || deploy == "snapshot"
+}
 
 assert validProperty('signing.keyId'),             'properties for signing must be provided'
 assert validProperty('signing.secretKeyRingFile'), 'properties for signing must be provided'
@@ -18,7 +20,7 @@ String askPassword(prompt) {
     "${System.console().readPassword(prompt)}"
 }
 
-if(isRemoteDeploy){
+if(isRemoteDeploy()){
     ext.'signing.password' = askPassword("Enter password for PGP key ${property('signing.keyId')}: ")
     ext.'sonatypePassword' = askPassword("Enter password for ${sonatypeUsername}@oss.sonatype.org: ")
 
@@ -27,23 +29,29 @@ if(isRemoteDeploy){
     }
 }
 
-// gradle -Pdeploy=local uploadArchives
+// gradle -Pdeploy=(local|snapshot|release) uploadArchives
 uploadArchives {
     repositories.mavenDeployer {
-        // -Pdeploy=central
-        if(isRemoteDeploy){
-            println "deploy to sonatype"
-
-            repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-        } else {
-            println "deploy to local repo: ${localRepoPath}"
-
-            // define at gradle.properties
-            repository(url: localRepoPath)
+        switch (deploy){
+            case "snapshot":
+                println "deploy to sonatype snapshot"
+                repository(url: 'https://oss.sonatype.org/content/repositories/snapshots') {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                break
+            case "release":
+                println "deploy to sonatype release"
+                repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2') {
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                break
+            default:    // deploy to local path
+                println "deploy to local repo: ${localRepoPath}"
+                // defined at gradle.properties
+                repository(url: localRepoPath)
+                break
         }
 
         pom.groupId    = project.group
