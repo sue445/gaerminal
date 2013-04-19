@@ -62,16 +62,6 @@ uploadArchives {
             packaging   'jar'
             description project.description
             url         'https://github.com/sue445/gaerminal'
-            repositories {
-                repository {
-                    id   'maven.seasar.org'
-                    name 'The Seasar Foundation Maven2 Repository'
-                    url  'https://www.seasar.org/maven/maven2'
-                    releases {
-                        updatePolicy 'never'
-                    }
-                }
-            }
             scm {
                 url 'git://github.com/sue445/gaerminal.git'
                 connection 'scm:git:git://github.com/sue445/gaerminal.git'

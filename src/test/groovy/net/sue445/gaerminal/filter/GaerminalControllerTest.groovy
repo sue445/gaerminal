@@ -4,13 +4,16 @@ import org.junit.Ignore
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
-import org.slim3.tester.ControllerTestCase
+import org.slim3.tester.MockFilterChain
+import org.slim3.tester.MockHttpServletRequest
+import org.slim3.tester.MockHttpServletResponse
+import org.slim3.tester.MockServletContext
 
 import javax.servlet.FilterConfig
 
 class GaerminalControllerTest {
 
-    static class init extends ControllerTestCase {
+    static class init {
         GaerminalController filter = new GaerminalController()
 
         @Test
@@ -39,46 +42,50 @@ class GaerminalControllerTest {
         }
     }
 
-    static class doFilter extends ControllerTestCase  {
+    static class doFilter {
         GaerminalController filter = new GaerminalController()
+
+        MockHttpServletRequest request = new MockHttpServletRequest(new MockServletContext())
+        MockHttpServletResponse response = new MockHttpServletResponse()
+        MockFilterChain filterChain = new MockFilterChain()
 
         @Test
         void "when exists file, return page file"(){
             // setup
-            tester.request.setServletPath(GaerminalController.DEFAULT_PATH_PREFIX + "helloworld")
+            request.setServletPath(GaerminalController.DEFAULT_PATH_PREFIX + "helloworld")
 
             // exercise
-            filter.doFilter(tester.request, tester.response, tester.filterChain)
+            filter.doFilter(request, response, filterChain)
 
             // assertion
-            assert tester.response.getOutputAsString().contains("Hello World") == true
-            assert tester.response.getStatus() == 200
+            assert response.getOutputAsString().contains("Hello World") == true
+            assert response.getStatus() == 200
         }
 
         @Test
         void "when not exists file, return status 404"(){
             // setup
-            tester.request.setServletPath(GaerminalController.DEFAULT_PATH_PREFIX + "invalid")
+            request.setServletPath(GaerminalController.DEFAULT_PATH_PREFIX + "invalid")
 
             // exercise
-            filter.doFilter(tester.request, tester.response, tester.filterChain)
+            filter.doFilter(request, response, filterChain)
 
             // assertion
-            assert tester.response.getOutputAsString() == "Not Found"
-            assert tester.response.getStatus() == 404
+            assert response.getOutputAsString() == "Not Found"
+            assert response.getStatus() == 404
         }
 
         @Test
         void "when called /gaerminal/, return index.html"(){
             // setup
-            tester.request.setServletPath(GaerminalController.DEFAULT_PATH_PREFIX)
+            request.setServletPath(GaerminalController.DEFAULT_PATH_PREFIX)
 
             // exercise
-            filter.doFilter(tester.request, tester.response, tester.filterChain)
+            filter.doFilter(request, response, filterChain)
 
             // assertion
-            assert tester.response.getOutputAsString().contains("pages/index.html") == true
-            assert tester.response.getStatus() == 200
+            assert response.getOutputAsString().contains("pages/index.html") == true
+            assert response.getStatus() == 200
         }
     }
 }
