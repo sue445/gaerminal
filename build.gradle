@@ -3,7 +3,6 @@ project.group       = 'net.sue445'
 project.version     = '0.0.2-SNAPSHOT'
 
 def gaeVersion    = '1.7.7'
-def slim3Version  = '1.0.16'
 def groovyVersion = '2.1.3'
 def lang = ['groovy', 'java']
 boolean isUploadArchives = gradle.startParameter.taskNames.contains('uploadArchives')
