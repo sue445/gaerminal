@@ -1,11 +1,17 @@
 package net.sue445.gaerminal.filter;
 
-import net.sue445.gaerminal.controller.Controller;
+import java.io.IOException;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import net.sue445.gaerminal.controller.Controller;
 
 public class GaerminalController implements Filter {
     protected static final String DEFAULT_PATH_PREFIX = "/gaerminal/";
@@ -75,7 +81,8 @@ public class GaerminalController implements Filter {
         return str == null || str.isEmpty();
     }
 
-    protected <T> T newInstance(String className){
+    @SuppressWarnings("unchecked")
+	protected <T> T newInstance(String className){
         try {
             return (T)Class.forName(className).newInstance();
         } catch (Exception e) {
