@@ -14,7 +14,7 @@
         background-repeat: no-repeat;
     }
     #loading.active {
-        background: url("http://sue445.github.io/gaerminal/static/loading.gif");
+        background: url("https://sue445.github.io/gaerminal/static/loading.gif");
     }
     --></style>
 </head>
@@ -42,6 +42,7 @@
 
             <div>
                 <button id="run" class="btn btn-primary">run</button>
+                <button id="run-selection" class="btn">run selection area</button>
                 <span id="loading"></span>
             </div>
 
@@ -53,25 +54,32 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<script src="https://sue445.github.io/gaerminal/static/jquery.selection.js"></script>
 <script type="text/javascript">
     (function($){
+        function runScript(script){
+            $("#loading").addClass("active");
+            $.ajax({
+                url: "script",
+                cache: true,
+                type: "POST",
+                traditional : true,
+                dataType: "text",
+                data: {
+                    script: script
+                },
+                success: function(res){
+                    $("#loading").removeClass("active");
+                    $("#output").val(res);
+                }
+            })
+        }
         $(document).ready(function(){
             $("#run").click(function(){
-                $("#loading").addClass("active");
-                $.ajax({
-                    url: "script",
-                    cache: true,
-                    type: "POST",
-                    traditional : true,
-                    dataType: "text",
-                    data: {
-                        script: $("#input").val()
-                    },
-                    success: function(res){
-                        $("#loading").removeClass("active");
-                        $("#output").val(res);
-                    }
-                })
+                runScript($("#input").val());
+            });
+            $("#run-selection").click(function(){
+                runScript($('#input').selection());
             });
         });
     })(jQuery);
