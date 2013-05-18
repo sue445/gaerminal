@@ -22,7 +22,7 @@ If you use maven, add to `pom.xml`
 <dependency>
     <groupId>net.sue445</groupId>
     <artifactId>gaerminal</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
 </dependency>
 ```
 
