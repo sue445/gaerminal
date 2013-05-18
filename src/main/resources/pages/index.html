@@ -6,8 +6,17 @@
     <title>GAErminal console</title>
     <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
     <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <style type="text/css">
-    </style>
+    <style type="text/css"><!--
+    #loading{
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        background-repeat: no-repeat;
+    }
+    #loading.active {
+        background: url("https://sue445.github.io/gaerminal/static/loading.gif");
+    }
+    --></style>
 </head>
 <body>
 
@@ -30,7 +39,12 @@
         <div class="span12">
             <h2>Input</h2>
             <textarea id="input" rows="10" class="span12"></textarea>
-            <button id="run" class="btn btn-primary">run</button>
+
+            <div>
+                <button id="run" class="btn btn-primary">run</button>
+                <button id="run-selection" class="btn">run selection area</button>
+                <span id="loading"></span>
+            </div>
 
             <h2>Output</h2>
             <textarea id="output" rows="10" class="span12"></textarea>
@@ -40,23 +54,35 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+<script src="https://sue445.github.io/gaerminal/static/jquery.selection.js"></script>
 <script type="text/javascript">
     (function($){
+        function runScript(script){
+            $("#loading").addClass("active");
+            $.ajax({
+                url: "script",
+                cache: true,
+                type: "POST",
+                traditional : true,
+                dataType: "text",
+                data: {
+                    script: script
+                },
+                success: function(res){
+                    $("#loading").removeClass("active");
+                    $("#output").val(res);
+                },
+                error: function(){
+                    $("#loading").removeClass("active");
+                }
+            })
+        }
         $(document).ready(function(){
             $("#run").click(function(){
-                $.ajax({
-                    url: "script",
-                    cache: true,
-                    type: "POST",
-                    traditional : true,
-                    dataType: "text",
-                    data: {
-                        script: $("#input").val()
-                    },
-                    success: function(res){
-                        $("#output").val(res);
-                    }
-                })
+                runScript($("#input").val());
+            });
+            $("#run-selection").click(function(){
+                runScript($('#input').selection());
             });
         });
     })(jQuery);
