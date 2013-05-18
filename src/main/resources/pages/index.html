@@ -6,8 +6,17 @@
     <title>GAErminal console</title>
     <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
     <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <style type="text/css">
-    </style>
+    <style type="text/css"><!--
+    #loading{
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        background-repeat: no-repeat;
+    }
+    #loading.active {
+        background: url("http://sue445.github.io/gaerminal/static/loading.gif");
+    }
+    --></style>
 </head>
 <body>
 
@@ -30,7 +39,11 @@
         <div class="span12">
             <h2>Input</h2>
             <textarea id="input" rows="10" class="span12"></textarea>
-            <button id="run" class="btn btn-primary">run</button>
+
+            <div>
+                <button id="run" class="btn btn-primary">run</button>
+                <span id="loading"></span>
+            </div>
 
             <h2>Output</h2>
             <textarea id="output" rows="10" class="span12"></textarea>
@@ -44,6 +57,7 @@
     (function($){
         $(document).ready(function(){
             $("#run").click(function(){
+                $("#loading").addClass("active");
                 $.ajax({
                     url: "script",
                     cache: true,
@@ -54,6 +68,7 @@
                         script: $("#input").val()
                     },
                     success: function(res){
+                        $("#loading").removeClass("active");
                         $("#output").val(res);
                     }
                 })
