@@ -1,4 +1,6 @@
-# GAErminal(GAE + terminal) [![Build Status](https://travis-ci.org/sue445/gaerminal.png)](https://travis-ci.org/sue445/gaerminal)
+# GAErminal(GAE + terminal)
+* master: [![Build Status](https://travis-ci.org/sue445/gaerminal.png?branch=master)](https://travis-ci.org/sue445/gaerminal)
+* develop: [![Build Status](https://travis-ci.org/sue445/gaerminal.png?branch=develop)](https://travis-ci.org/sue445/gaerminal)
 
 ## Overview
 run groovy script on your [Google App Engine](https://developers.google.com/appengine/) app
