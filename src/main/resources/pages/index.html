@@ -71,6 +71,9 @@
                 success: function(res){
                     $("#loading").removeClass("active");
                     $("#output").val(res);
+                },
+                error: function(){
+                    $("#loading").removeClass("active");
                 }
             })
         }
