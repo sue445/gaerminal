@@ -7,7 +7,7 @@ run groovy script on your [Google App Engine](https://developers.google.com/appe
 (like as Jenkins script console)
 
 ## Sample
-![gaerminal](http://cdn-ak.f.st-hatena.com/images/fotolife/s/sue445/20130420/20130420175006_original.png)
+![gaerminal](http://cdn-ak.f.st-hatena.com/images/fotolife/s/sue445/20130519/20130519235248.png)
 
 ## Install
 ### 1. add jar in your classpath
